@@ -36,7 +36,7 @@ class Piece(models.Model):
     name = models.CharField(max_length=100)
     composer = models.ForeignKey(Composer, on_delete=models.CASCADE)
     description = models.TextField()
-    source = models.FileField(upload_to='../mp3/')
+    source = models.FileField(upload_to='upload')
     period = models.ForeignKey(Period, on_delete=models.CASCADE)
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
     

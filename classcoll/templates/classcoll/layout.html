@@ -14,7 +14,7 @@
         background: url({% static 'classcoll/images/background.jpg'%});
         background-size: 100%;">
         <nav class="nav side-bar bg-transparent col-2 column">
-            <img src="{% static 'classcoll/images/logo.png'%}" width="70">
+            <img src="{% static 'classcoll/images/logo.png'%}" width="120">
             <a style="font-size: 28px;" class="navbar-brand" href="#">Classical Collection</a>
           
             <div>
@@ -25,13 +25,13 @@
                 </li>
                 {% if user.is_authenticated %}
                   <li class="nav-item">
-                      <a class="nav-link" href="{% url 'logout' %}">Favorite</a>
+                      <a class="nav-link" href="#">Favorite</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="{% url 'logout' %}">Composer</a>
+                      <a class="nav-link" href="#">Composer</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="{% url 'logout' %}">Works</a>
+                      <a class="nav-link" href="{% url 'upload' %}">Works</a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

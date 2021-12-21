@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.core.files.storage import FileSystemStorage
 
 from .models import *
 
@@ -61,3 +62,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "classcoll/register.html")
+    
+def upload(request):
+    if request.method == 'POST':
+        uploadedFile = request.FILES['document']
+        fs = FileSystemStorage()
+        fs.save(uploadedFile.name, uploadedFile)
+        return render(request, 'classcoll/upload.html', {
+            'uploaded': True,
+            'source': uploadedFile
+        })
+    return render(request, 'classcoll/upload.html', {
+        'uploaded': False
+    })
