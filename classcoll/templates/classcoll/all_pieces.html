@@ -1,0 +1,43 @@
+{% extends "classcoll/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="bg-light" style="opacity: 0.8">
+        <h4 style="color: blue;">Upload</h4>
+        <form method="POST", enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="text" name="name">
+            <input type="text" name="composer">
+            <textarea name="description" rows="4">
+            </textarea>
+            <div>
+                <input type="file" name="document" accept=".mp3">
+            </div>
+            <select name="period">
+                {% for period in periods %}
+                    <option value="{{period.era}}">{{period.era}}</option>
+                {% endfor %}
+            </select>
+            <select name="difficulty">
+                {% for level in difficulty %}
+                    <option value="{{difficulty.rating}}">{{difficulty.rating}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Upload</button>
+        </form>
+        <div>
+            {% for piece in pieces %}
+                <a href='#'>
+                    <div style="border: 1px solid black;">
+                        <h4>{{piece.name}}</h4>
+                        <audio controls>
+                            <source src="{{piece.source}}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        
+    </div>
+{% endblock %}
+

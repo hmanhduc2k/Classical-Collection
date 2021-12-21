@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Composer(models.Model):
     name = models.CharField(max_length=100)
     biography = models.TextField()
-    image = models.URLField(blank=False)
+    image = models.FileField(upload_to='upload')
     
     def __str__(self) -> str:
         return f"{self.name}#{self.id}"

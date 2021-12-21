@@ -1,0 +1,29 @@
+{% extends "classcoll/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div>
+        <form method="POST" action="#">
+            {% csrf_token %}
+            <input type="text" name="name">
+            <textarea name="biography" rows="5"></textarea>
+            <div>
+                <input type=="file" name="document" accept=".jpg">
+            </div>
+            <button type="submit">Post Information</button>
+            <p>
+                Note that information you submitted will be subjected
+                to moderations and filtering of suspected repetition.
+            </p>
+        </form>
+        <div>
+            {% for composer in composers %}
+                <div style="border: 1px solid black;">
+                    <h3>{{ composer.name }}</h3>
+                    <p> {{ composer.biography }}</p>
+                    <img src="{{ composer.image }}" width="25">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

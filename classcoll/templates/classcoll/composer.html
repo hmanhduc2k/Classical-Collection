@@ -1,0 +1,25 @@
+{% extend 'classcoll/layout.html' %}
+{% load static %}
+
+{% block body %}
+    <div>
+        <h2>{{composer.name}}<h2>
+        <img src="{{composer.image}}">
+        <p>{{composer.biography}}</p>
+        <hr>
+    </div>
+
+    <div>
+        {% for piece in pieces %}
+            <a href="#">
+                <div>
+                    {{ piece.name }}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div>
+        {% for comment in comments %}
+        {% endfor %}
+    </div>
+{% endblock %}

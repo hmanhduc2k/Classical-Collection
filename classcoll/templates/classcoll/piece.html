@@ -1,0 +1,17 @@
+{% extend 'classcoll/layout.html' %}
+{% load static %}
+
+{% block body %}
+    <div>
+        <h2>{{piece.name}}<h2>
+        <h5>{{piece.composer.name}}</h5>
+        <audio controls>
+            <source src="{{piece.source}}" type="audio/mpeg">
+        </audio>
+        <p>{{piece.description}}</p>
+    </div>
+
+    <div>
+        {% comment %} For comments {% endcomment %}
+    </div>
+{% endblock %}

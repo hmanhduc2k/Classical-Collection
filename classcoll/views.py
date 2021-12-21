@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -6,6 +6,8 @@ from django.db import IntegrityError
 from django.core.files.storage import FileSystemStorage
 
 from .models import *
+
+fs = FileSystemStorage()
 
 # Create your views here.
 def index(request):
@@ -63,15 +65,41 @@ def register(request):
     else:
         return render(request, "classcoll/register.html")
     
-def upload(request):
+def allPieces(request):
     if request.method == 'POST':
+        name = request.POST['name']
+        composer = request.POST['composer']
+        description = request.POST['description']
         uploadedFile = request.FILES['document']
-        fs = FileSystemStorage()
+        newPiece = Piece(
+            name = name,
+            composer = composer,
+            description = description,
+            source = uploadedFile
+        )
+        newPiece.save()
         fs.save(uploadedFile.name, uploadedFile)
-        return render(request, 'classcoll/upload.html', {
+        return render(request, 'classcoll/piece.html', {
             'uploaded': True,
             'source': uploadedFile
         })
-    return render(request, 'classcoll/upload.html', {
+    return render(request, 'classcoll/all_pieces.html', {
         'uploaded': False
+    })
+    
+def allComposers(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        biography = request.POST['biography']
+        image = request.FILE['document']
+        fs.save(image.name, image)
+        newComposer = Composer(
+            name=name,
+            biography=biography,
+            image=image
+        )
+        newComposer.save()
+        return redirect('index')
+    return render(request, "classcoll/all_composer.html", {
+        'composers': Composer.objects.all()
     })
