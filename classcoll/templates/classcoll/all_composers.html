@@ -2,27 +2,42 @@
 {% load static %}
 
 {% block body %}
-    <div>
-        <form method="POST" action="#">
+    <div class="bg-light">
+        <form method="POST" action="{% url 'all_composer'%}">
             {% csrf_token %}
-            <input type="text" name="name">
-            <textarea name="biography" rows="5"></textarea>
-            <div>
-                <input type=="file" name="document" accept=".jpg">
+            <div class="form-group">
+                <label>Composer Name:</label>
+                <input class="form-control" type="text" name="name" required>
             </div>
-            <button type="submit">Post Information</button>
+            <div class="form-floating">
+                <label>Composer Description:</label>
+                <textarea required class="form-control" name="biography" rows="5"></textarea>
+            </div>
+            <div>
+                <label>Image URL</label>
+                <input required class="form-control" type="text" name="document">
+                <br>
+                <button type="submit" class="btn btn-primary">Post Information</button>
+            </div>
             <p>
                 Note that information you submitted will be subjected
                 to moderations and filtering of suspected repetition.
             </p>
         </form>
+
         <div>
             {% for composer in composers %}
-                <div style="border: 1px solid black;">
-                    <h3>{{ composer.name }}</h3>
-                    <p> {{ composer.biography }}</p>
-                    <img src="{{ composer.image }}" width="25">
-                </div>
+                <a href="{% url 'composer' composer.name %}">
+                    <div class="row" style="border: 1px solid black;">
+                        <div class="col-2">
+                            <img src="{{ composer.image }}" width="150">
+                        </div>
+                        <div class="col-10">
+                            <h3>{{ composer.name }}</h3>
+                            <p> {{ composer.biography }}</p>
+                        </div>
+                    </div>
+                </a>
             {% endfor %}
         </div>
     </div>

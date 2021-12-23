@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Composer(models.Model):
     name = models.CharField(max_length=100)
     biography = models.TextField()
-    image = models.FileField(upload_to='upload')
+    image = models.URLField(blank=False)
     
     def __str__(self) -> str:
         return f"{self.name}#{self.id}"
@@ -36,7 +36,7 @@ class Piece(models.Model):
     name = models.CharField(max_length=100)
     composer = models.ForeignKey(Composer, on_delete=models.CASCADE)
     description = models.TextField()
-    source = models.FileField(upload_to='upload')
+    source = models.FileField()
     period = models.ForeignKey(Period, on_delete=models.CASCADE)
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
     

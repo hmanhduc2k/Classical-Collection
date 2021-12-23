@@ -1,14 +1,17 @@
-{% extend 'classcoll/layout.html' %}
+{% extends 'classcoll/layout.html' %}
 {% load static %}
 
 {% block body %}
-    <div>
+    <div class="bg-light">
         <h2>{{piece.name}}<h2>
-        <h5>{{piece.composer.name}}</h5>
+        <h5><a href="{% url 'composer' piece.composer.name%}">{{piece.composer.name}}</a></h5>
         <audio controls>
-            <source src="{{piece.source}}" type="audio/mpeg">
+            <source src="/upload/{{piece.source}}" type="audio/mpeg">
         </audio>
         <p>{{piece.description}}</p>
+        <br>
+        <p>Musical period: {{ piece.period.era }}</p>
+        <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
     </div>
 
     <div>

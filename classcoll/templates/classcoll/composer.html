@@ -1,17 +1,17 @@
-{% extend 'classcoll/layout.html' %}
+{% extends 'classcoll/layout.html' %}
 {% load static %}
 
 {% block body %}
-    <div>
+    <div class="bg-light">
         <h2>{{composer.name}}<h2>
-        <img src="{{composer.image}}">
-        <p>{{composer.biography}}</p>
+        <img src="{{composer.image}}" width="100">
+        <p style="font-size: 20px;">{{composer.biography}}</p>
         <hr>
     </div>
 
     <div>
         {% for piece in pieces %}
-            <a href="#">
+            <a href="{% url 'piece' piece.name %}">
                 <div>
                     {{ piece.name }}
                 </div>

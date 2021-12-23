@@ -1,3 +1,6 @@
+import json
+from django.http.response import JsonResponse
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -68,31 +71,35 @@ def register(request):
 def allPieces(request):
     if request.method == 'POST':
         name = request.POST['name']
-        composer = request.POST['composer']
+        composerName = request.POST['composer']
+        composer = Composer.objects.filter(name=composerName).first()
         description = request.POST['description']
         uploadedFile = request.FILES['document']
+        period = Period.objects.filter(era=request.POST['period']).first()
+        difficulty = Difficulty.objects.filter(rating=request.POST['difficulty']).first()
         newPiece = Piece(
             name = name,
             composer = composer,
             description = description,
-            source = uploadedFile
+            source = uploadedFile,
+            period = period,
+            difficulty = difficulty
         )
         newPiece.save()
         fs.save(uploadedFile.name, uploadedFile)
-        return render(request, 'classcoll/piece.html', {
-            'uploaded': True,
-            'source': uploadedFile
+        return redirect('index')
+    else:
+        return render(request, 'classcoll/all_pieces.html', {
+            'periods': Period.objects.all(),
+            'difficulty': Difficulty.objects.all(),
+            'pieces': Piece.objects.all()
         })
-    return render(request, 'classcoll/all_pieces.html', {
-        'uploaded': False
-    })
     
 def allComposers(request):
     if request.method == 'POST':
         name = request.POST['name']
         biography = request.POST['biography']
-        image = request.FILE['document']
-        fs.save(image.name, image)
+        image = request.POST['document']
         newComposer = Composer(
             name=name,
             biography=biography,
@@ -100,6 +107,37 @@ def allComposers(request):
         )
         newComposer.save()
         return redirect('index')
-    return render(request, "classcoll/all_composer.html", {
-        'composers': Composer.objects.all()
+    else:
+        return render(request, "classcoll/all_composers.html", {
+            'composers': Composer.objects.all()
+        })
+
+def composer(request, name):
+    try:
+        target = Composer.objects.filter(name=name).first()
+    except:
+        redirect('index')
+    pieces = Piece.objects.filter(composer=target)
+    return render(request, "classcoll/composer.html", {
+        'composer': target,
+        'pieces': pieces
     })
+    
+def piece(request, name):
+    try:
+        target = Piece.objects.filter(name=name).first()
+    except:
+        redirect('index')
+    return render(request, 'classcoll/piece.html', {
+        'piece': target
+    })
+
+def comment(request, id):
+    if request.method == 'POST':
+        piece = Piece.objects.filter(id=id).first()
+        data = json.loads(request.body)
+        return JsonResponse(status=200)
+    # elif request.method == 'PUT':
+    # elif request.method == 'DELETE'
+    else:
+        return JsonResponse(status=404)
