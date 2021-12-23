@@ -12,9 +12,32 @@
         <br>
         <p>Musical period: {{ piece.period.era }}</p>
         <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
+        <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
+            Add to Favorite
+        </button>
     </div>
 
     <div>
-        {% comment %} For comments {% endcomment %}
+        <form method="POST" action="">
+            <div class="form-floating">
+                <textarea class="form-control" required name="comment"></textarea>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div>
+            {% for comment in comments %}
+                <div>
+                    {% if comment.parent %}
+                    {% endif %}
+                    <i>Posted by {{comment.user.username}} at {{comment.time}}</i>
+                    <p> {{comment.content}} </p>
+                    <button class="btn btn-primary">Reply</button>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'classcoll/js/piece.js' %}"></script>
 {% endblock %}

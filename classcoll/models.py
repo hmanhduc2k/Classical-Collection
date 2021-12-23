@@ -55,8 +55,8 @@ class Piece(models.Model):
     
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pieces = models.ManyToManyField(Piece, blank=True)
-    composers = models.ManyToManyField(Composer, blank=True)
+    pieces = models.ManyToManyField(Piece, blank=True, related_name='pieces')
+    composers = models.ManyToManyField(Composer, blank=True, related_name='composers')
     
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

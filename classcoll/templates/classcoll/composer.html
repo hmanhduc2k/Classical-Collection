@@ -4,12 +4,19 @@
 {% block body %}
     <div class="bg-light">
         <h2>{{composer.name}}<h2>
-        <img src="{{composer.image}}" width="100">
-        <p style="font-size: 20px;">{{composer.biography}}</p>
+        <div class="row">
+            <div class="col-6"><img src="{{composer.image}}" width="200"></div>
+            <div class="col-6">
+                <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
+                    Add to Favorite
+                </button>
+            </div>
+        </div>
+        <p style="font-size: 16px;">{{composer.biography}}</p>
         <hr>
     </div>
 
-    <div>
+    <div class="bg-light">
         {% for piece in pieces %}
             <a href="{% url 'piece' piece.name %}">
                 <div>
@@ -18,8 +25,8 @@
             </a>
         {% endfor %}
     </div>
-    <div>
-        {% for comment in comments %}
-        {% endfor %}
-    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'classcoll/js/composer.js' %}"></script>
 {% endblock %}

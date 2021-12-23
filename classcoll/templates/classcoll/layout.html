@@ -25,7 +25,7 @@
                 </li>
                 {% if user.is_authenticated %}
                   <li class="nav-item">
-                      <a class="nav-link" href="#">Favorite</a>
+                      <a class="nav-link" href="{% url 'favorite' %}">Favorite</a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="{% url 'all_composer' %}">Composer</a>

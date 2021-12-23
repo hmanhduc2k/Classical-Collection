@@ -1,0 +1,36 @@
+{% extends 'classcoll/layout.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="bg-light">
+        <div>
+            <h6> {{ user.username }} </h6>
+            <h3> Favorite </h3>
+        </div>
+        <div>
+            <button id="btnPiece" class="btn btn-primary">Pieces</button>
+            <button id="btnComposer" class="btn btn-success">Composers</button>
+        </div>
+
+        <div id="piece" style="display: none;">
+            {% for piece in pieces %}
+                <div>
+                    <a href="{% url 'piece' piece.name%}">{{piece.name}} by {{piece.composer.name}}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="composer">
+            {% for composer in composers %}
+                <div>
+                    <img src="{{composer.image}}" width="150">
+                    <a href="{% url 'composer' composer.name%}">{{composer.name}}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'classcoll/js/favorite.js' %}"></script>
+{% endblock %}
