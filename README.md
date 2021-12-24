@@ -1,7 +1,8 @@
 # Classical-Collection
 
 Classical Collection is a web database and web MP3 player specific to Western classical music. It aims to document notable composers of classical music, their works,
-and serve as a platform to play their works. Kind of like Spotify, but with a more narrowed scope
+and serve as a platform to play their works. Kind of like Spotify, but with a more narrowed scope.
+This project is my submission for the course CS50 Web Programming in Python and JavaScript offered by Harvard.
 
 ## Distinctiveness and Complexity
 Classical Collection has some of its minor concepts inspired from the previous projects, but the overarching concepts are completely unique. It is somewhat a crossover of
