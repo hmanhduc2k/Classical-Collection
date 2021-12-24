@@ -6,8 +6,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import Count
 from django.core.files.storage import FileSystemStorage
+
 
 from .models import *
 
@@ -115,15 +118,18 @@ def allComposers(request):
             'composers': Composer.objects.all()
         })
 
+@login_required(login_url='login')
 def composer(request, name):
     try:
         target = Composer.objects.filter(name=name).first()
     except:
         redirect('index')
     pieces = Piece.objects.filter(composer=target)
+    favorite = Favorite.objects.filter(user=request.user).first().composers.all()
     return render(request, "classcoll/composer.html", {
         'composer': target,
-        'pieces': pieces
+        'pieces': pieces,
+        'favorite': favorite
     })
 
 @csrf_exempt
@@ -142,7 +148,7 @@ def favcomposer(request, id):
         else:
             fav.composers.add(target)
             fav.save()
-            return JsonResponse({"message": "Remove to Favorite"}, status = 200)
+            return JsonResponse({"message": "Remove from Favorite"}, status = 200)
         
 @csrf_exempt
 def favpiece(request, id):
@@ -167,19 +173,20 @@ def piece(request, name):
         target = Piece.objects.filter(name=name).first()
     except:
         redirect('index')
+    comments = Comment.objects.filter(piece=target).annotate(upvotes=Count('upvote')).order_by('-time')
+    temp = Upvote.objects.filter(user=request.user)
+    upvotes = []        # get a list of all upvoted comments by the users
+    for upvote in temp:
+        if upvote.comment in comments:
+            upvotes.append(upvote.comment)
+    favorite = Favorite.objects.filter(user=request.user).first().pieces.all()
+    
     return render(request, 'classcoll/piece.html', {
-        'piece': target
+        'piece': target,
+        'comments': comments,
+        'upvotes': upvotes,
+        'favorite': favorite
     })
-
-def comment(request, id):
-    if request.method == 'POST':
-        piece = Piece.objects.filter(id=id).first()
-        data = json.loads(request.body)
-        return JsonResponse(status=200)
-    # elif request.method == 'PUT':
-    # elif request.method == 'DELETE'
-    else:
-        return JsonResponse(status=404)
     
 def favorite(request):
     user = request.user
@@ -190,58 +197,55 @@ def favorite(request):
         'pieces': pieces,
         'composers': composers
     })
-    
+
+@csrf_exempt
 def comment(request, id):
-    data = json.loads(request.body)
-    user = request.user
-    content = data.get('content')
-    group = data.get('group')
-    parent = data.get('parent')
+    print('Hello World')
     if request.method == 'POST':
-       newComment = Comment.objects.create(
-           user=user,
-           content=content,
-           parent=parent,
-           group=group
-       )
-       newComment.save()
-       return JsonResponse(status=200)
+        data = json.loads(request.body)
+        # id refers to piece id
+        target = Piece.objects.filter(id=id).first()
+        newComment = Comment.objects.create(
+            user=request.user,
+            content=data.get('content'),
+            piece=target
+        )
+        newComment.save()
+        return JsonResponse(status=200)
     elif request.method == 'PUT':
+        data = json.loads(request.body)
         existedComment = Comment.objects.filter(
             id = id,
-            user = user,
-            group = group
-        )
-        existedComment.content = content
+            user = request.user,
+        ).first()
+        existedComment.content = data.get('content')
         existedComment.save()
         return JsonResponse(status = 200)
     elif request.method == 'DELETE':
         existedComment = Comment.objects.filter(
-            id = id,
-            user = user
-        )
+            pk = id
+        ).first()
         existedComment.delete()
-        return JsonResponse(status = 200)
-    
+        return JsonResponse({'message': 'success'}, status = 200)
+
+@csrf_exempt
 def upvote(request, id):
     if request.method == 'PUT':
-        data = json.loads(request.body)
-        commentId = data.get('id')
-        comment = Comment.objects.filter(id = commentId).first()
+        comment = Comment.objects.filter(id = id).first()
         upvoted = Upvote.objects.filter(
             user = request.user,
             comment = comment
         ).first()
         if upvoted is not None:
             upvoted.delete()
-            return JsonResponse(status = 200)
+            return JsonResponse({'status': False}, status = 200)
         else:
             upvoted = Upvote.objects.create(
                 user = request.user,
                 comment = comment
             )
             upvoted.save()
-            return JsonResponse(status = 200)
+            return JsonResponse({'status': True}, status = 200)
         
 def sort(request, type):
     if type == 'period':

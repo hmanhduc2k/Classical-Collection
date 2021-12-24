@@ -62,8 +62,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
-    group = models.CharField(max_length=100)
+    piece = models.ForeignKey(Piece, null=True, on_delete=models.CASCADE, related_name='piece')
     
     def __str__(self) -> str:
         return f"{self.user} commented {self.content} at {self.time}"

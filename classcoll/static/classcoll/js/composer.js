@@ -8,7 +8,21 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(result => {
-            this.innerHTML = result.message
+            item.innerHTML = result.message
         })
     }))
+
+    document.querySelectorAll('#showPieces').forEach(item => {
+        item.addEventListener('click', () => {
+            item.parentElement.querySelector('#allPieces').style.display = 'block'
+            item.parentElement.querySelector('#biography').style.display = 'none'
+        })
+    })
+
+    document.querySelectorAll('#showBiography').forEach(item => {
+        item.addEventListener('click', () => {
+            item.parentElement.querySelector('#allPieces').style.display = 'none'
+            item.parentElement.querySelector('#biography').style.display = 'block'
+        })
+    })
 })

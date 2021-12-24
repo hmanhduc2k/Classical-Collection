@@ -4,26 +4,34 @@
 {% block body %}
     <div class="bg-light">
         <h2>{{composer.name}}<h2>
-        <div class="row">
-            <div class="col-6"><img src="{{composer.image}}" width="200"></div>
-            <div class="col-6">
-                <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
-                    Add to Favorite
-                </button>
-            </div>
+        <div>
+            <div><img src="{{composer.image}}" width="200"></div>
+            <br>
         </div>
-        <p style="font-size: 16px;">{{composer.biography}}</p>
+        <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
+            {% if composer in favorite %}
+                Remove from Favorite
+            {% else %}
+                Add to Favorite
+            {% endif %}
+        </button>
+        <button id="showPieces" class="btn btn-success">Compositions</button>
+        <button id="showBiography" class="btn btn-success">Biography</button>
+        <br>
+        <br>
+        <div id="biography" style="display: none;">
+            <p style="font-size: 16px; font-weight: 400;">{{composer.biography}}</p>
+        </div>
         <hr>
-    </div>
-
-    <div class="bg-light">
-        {% for piece in pieces %}
-            <a href="{% url 'piece' piece.name %}">
+        <div class="bg-light" id="allPieces">
+            {% for piece in pieces %}
                 <div>
-                    {{ piece.name }}
+                    <a style="font-size: 18px;" href="{% url 'piece' piece.name %}">
+                        {{ piece.name }}
+                    </a>
                 </div>
-            </a>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 

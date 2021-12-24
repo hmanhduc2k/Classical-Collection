@@ -2,47 +2,55 @@
 {% load static %}
 
 {% block body %}
+
+    <div>
+        <button class="btn btn-primary" id="showPieces">All pieces</button>
+        <button class="btn btn-primary" id="showForm">Upload</button>
+    </div>
+
     <div class="bg-light" style="opacity: 0.8">
-        <h4 style="color: blue;">Upload</h4>
-        <form method="POST", enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label>Name of the piece</label>
-                <input class="form-control" type="text" name="name">
-            </div>
-            <div class="form-group">
-                <label>Composers</label>
-                <input type="text" class="form-control" name="composer">
-            </div>
-            <div class="form-floating">
-                <label>Short description</label>
-                <textarea class="form-control" name="description" rows="3">
-                </textarea>
-            </div>
-            <div>
-                <input type="file" name="document" accept=".mp3">
-            </div>
-            <div>
-                <label>Select Period</label>
-                <select name="period">
-                    {% for period in periods %}
-                        <option value="{{period.era}}">{{period.era}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label>Select Level of Difficulty</label>
-                <select name="difficulty">
-                    {% for level in difficulty %}
-                        <option value="{{level.rating}}">{{level.rating}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button class="btn btn-success" type="submit">Upload</button>
-        </form>
-        <div>
+        <div id="forms" style="display: none;">
+            <h4 style="color: blue;">Upload</h4>
+            <form method="POST", enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Name of the piece</label>
+                    <input required class="form-control" type="text" name="name">
+                </div>
+                <div class="form-group">
+                    <label>Composers</label>
+                    <input required type="text" class="form-control" name="composer">
+                </div>
+                <div class="form-floating">
+                    <label>Short description</label>
+                    <textarea required class="form-control" name="description" rows="3">
+                    </textarea>
+                </div>
+                <div>
+                    <input required type="file" name="document" accept=".mp3">
+                </div>
+                <div>
+                    <label>Select Period</label>
+                    <select name="period">
+                        {% for period in periods %}
+                            <option value="{{period.era}}">{{period.era}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Select Level of Difficulty</label>
+                    <select name="difficulty">
+                        {% for level in difficulty %}
+                            <option value="{{level.rating}}">{{level.rating}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-success" type="submit">Upload</button>
+            </form>
+        </div>
+        <div id="pieces">
             {% for piece in pieces %}
-                <a href='#'>
+                <a href="{% url 'piece' piece.name %}">
                     <div style="border: 1px solid black;">
                         <h4>{{piece.name}}</h4>
                         <audio controls>
@@ -56,5 +64,6 @@
     </div>
 {% endblock %}
 
-<script>
-</script>
+{% block script %}
+    <script src="{% static 'classcoll/js/all_pieces.js' %}"></script>
+{% endblock %}

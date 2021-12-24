@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light">
+    <button id="showInfo" class="btn btn-info">Information</button>
+    <button id="showComment" class="btn btn-info">Comments</button>
+    <div class="bg-light" id="pieceInfo">
         <h2>{{piece.name}}<h2>
         <h5><a href="{% url 'composer' piece.composer.name%}">{{piece.composer.name}}</a></h5>
         <audio controls>
@@ -13,25 +15,70 @@
         <p>Musical period: {{ piece.period.era }}</p>
         <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
         <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
-            Add to Favorite
+            {% if piece in favorite %}
+                Remove from Favorite 
+            {% else %}
+                Add to Favorite 
+            {% endif %}
         </button>
     </div>
 
-    <div>
-        <form method="POST" action="">
+    <div class="bg-light" id="commentSection" style="display: none;">
+        <h4>Comments:</h4>
+        <form method="POST" id="commentForm" data-value="{{piece.id}}" >
+            {% csrf_token %}
             <div class="form-floating">
-                <textarea class="form-control" required name="comment"></textarea>
-                <button type="submit">Submit</button>
+                <textarea placeholder="Write something..." id="comment" class="form-control" required name="comment"></textarea>
+                <button class="btn btn-primary" type="submit">Submit</button>
             </div>
         </form>
+        <br>
+        <div class="btn-group">
+            <button type="button" class="btn btn-succes dropdown-toggle" 
+            aria-expanded="false" data-bs-toggle="dropdown">
+                Sort by
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+            </ul>
+        </div>
         <div>
             {% for comment in comments %}
-                <div>
-                    {% if comment.parent %}
-                    {% endif %}
-                    <i>Posted by {{comment.user.username}} at {{comment.time}}</i>
-                    <p> {{comment.content}} </p>
-                    <button class="btn btn-primary">Reply</button>
+                <div style="border: 1px black solid; margin: 10px;">
+                    <div style="margin: 10px;"> 
+                        <i>Posted by {{comment.user.username}} at {{comment.time}}</i>
+                        <p id="contentHolder"> {{comment.content}} </p>
+                        <p> 
+                            <span id="upvoteCount">{{ comment.upvotes }}</span>
+                            <span id="upvote" data-value="{{comment.id}}">
+                                {% if comment not in upvotes %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    </svg>
+                                {% endif %}
+                            </span>
+                        </p>
+                        {% if comment.user == user %}
+                            <button style="height: 25px; font-size: 10px;" id="edit" class="btn btn-warning">Edit</button>
+                            <button style="height: 25px; font-size: 10px;" id="delete" data-value="{{comment.id}}" class="btn btn-danger">Delete</button>
+
+                            <form style="display: none;" method="POST" id="commentEdit" data-value="{{comment.id}}" >
+                                {% csrf_token %}
+                                <div class="form-floating">
+                                    <textarea id="newComment" class="form-control" required name="comment">
+                                        {{comment.content}}
+                                    </textarea>
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button id="cancel" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </form>
+                        {% endif %}  
+                    </div>
                 </div>
             {% endfor %}
         </div>
