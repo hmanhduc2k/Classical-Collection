@@ -1,18 +1,14 @@
 import json
 import random
-from django import urls
-from django.db.models.fields import NullBooleanField
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count
-from django.core import paginator
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 
@@ -170,12 +166,11 @@ def composer(request, name):
     try:
         target = Composer.objects.filter(name=name).first()
     except:
-        redirect('index')
+        render(request, 'classcoll/error.html')
     pieces = Piece.objects.filter(composer=target)
     favorite = []
     if request.user.is_authenticated:
         favorite = Favorite.objects.filter(user=request.user).first().composers.all()
-    
     return render(request, "classcoll/composer.html", {
         'composer': target,
         'pieces': pieces,
@@ -221,10 +216,9 @@ def favpiece(request, id):
             return JsonResponse({'message': 'Remove from Favorite'}, status=200)
     
 def piece(request, name):
-    try:
-        target = Piece.objects.filter(name=name).first()
-    except:
-        redirect('index')
+    target = Piece.objects.filter(name=name).first()
+    if target is None:
+        return render(request, 'classcoll/error.html')
     comments = Comment.objects.filter(piece=target).annotate(upvotes=Count('upvote')).order_by('-upvote')
     temp = Upvote.objects.filter(user=request.user)
     upvotes = []        # get a list of all upvoted comments by the users
@@ -234,7 +228,6 @@ def piece(request, name):
     favorite = []
     if request.user.is_authenticated:
         favorite = Favorite.objects.filter(user=request.user).first().pieces.all()
-    
     paginator = Paginator(comments, 10)
     pageNumber = request.GET.get('page')
     comments = paginator.get_page(pageNumber)
@@ -260,7 +253,6 @@ def favorite(request):
 @login_required(login_url='login')
 @csrf_exempt
 def comment(request, id):
-    print('Hello World')
     if request.method == 'POST':
         data = json.loads(request.body)
         # id refers to piece id
@@ -310,14 +302,20 @@ def upvote(request, id):
 
 def period(request, name):
     target = Period.objects.filter(era=name).first()
-    return render(request, 'classcoll/period.html', {
-        'periods': Period.objects.all(),
-        'target': target
-    })
+    if target is None:
+        return render(request, 'classcoll/error.html')
+    else:
+        return render(request, 'classcoll/period.html', {
+            'periods': Period.objects.all(),
+            'target': target
+        })
     
 def difficulty(request, name):
     target = Difficulty.objects.filter(rating=name).first()
-    return render(request, 'classcoll/difficulty.html', {
-        'difficulties': Difficulty.objects.all(),
-        'target': target
-    })
+    if target is None:
+        return render(request, 'classcoll/error.html')
+    else:
+        return render(request, 'classcoll/difficulty.html', {
+            'difficulties': Difficulty.objects.all(),
+            'target': target
+        })
