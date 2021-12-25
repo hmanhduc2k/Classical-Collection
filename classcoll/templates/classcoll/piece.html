@@ -14,13 +14,15 @@
         <br>
         <p>Musical period: {{ piece.period.era }}</p>
         <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
-        <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
-            {% if piece in favorite %}
-                Remove from Favorite 
-            {% else %}
-                Add to Favorite 
-            {% endif %}
-        </button>
+        {% if user.is_authenticated %}
+            <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
+                {% if piece in favorite %}
+                    Remove from Favorite 
+                {% else %}
+                    Add to Favorite 
+                {% endif %}
+            </button>
+        {% endif %}
     </div>
 
     <div class="bg-light" id="commentSection" style="display: none;">
@@ -33,15 +35,17 @@
             </div>
         </form>
         <br>
-        <div class="btn-group">
-            <button type="button" class="btn btn-succes dropdown-toggle" 
-            aria-expanded="false" data-bs-toggle="dropdown">
+        <div class="mb-1">
+            <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="sortBy" data-bs-toggle="dropdown" aria-expanded="false">
                 Sort by
             </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+            <ul class="dropdown-menu" aria-labelledby="sortBy">
+                <li><a class="dropdown-item" href="#">Newest</a></li>
+                <li><a class="dropdown-item" href="#">Random</a></li>
+                <li><a class="dropdown-item" href="#">Most upvoted</a></li>
             </ul>
+            </div>
         </div>
         <div>
             {% for comment in comments %}
@@ -77,7 +81,7 @@
                                     <button id="cancel" class="btn btn-secondary">Cancel</button>
                                 </div>
                             </form>
-                        {% endif %}  
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

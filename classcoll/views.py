@@ -1,7 +1,10 @@
 import json
+import random
+from django import urls
 from django.db.models.fields import NullBooleanField
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -13,12 +16,20 @@ from django.core.files.storage import FileSystemStorage
 
 
 from .models import *
+from .utils import *
 
 fs = FileSystemStorage()
 
 # Create your views here.
 def index(request):
-    return render(request, 'classcoll/index.html')
+    composers = Composer.objects.all()
+    pieces = Piece.objects.all()
+    randomComposer = random.choice(composers)
+    randomPiece = random.choice(pieces)
+    return render(request, 'classcoll/index.html', {
+        'composer': randomComposer,
+        'piece': randomPiece
+    })
 
 
 def login_view(request):
@@ -95,10 +106,15 @@ def allPieces(request):
         # fs.save(uploadedFile.name, uploadedFile)
         return redirect('index')
     else:
+        key = request.GET.get("key", "")
+        pieces = []
+        for piece in Piece.objects.all():
+            if key in piece.name:
+                pieces.append(piece)
         return render(request, 'classcoll/all_pieces.html', {
             'periods': Period.objects.all(),
             'difficulty': Difficulty.objects.all(),
-            'pieces': Piece.objects.all()
+            'pieces': pieces
         })
     
 def allComposers(request):
@@ -114,24 +130,31 @@ def allComposers(request):
         newComposer.save()
         return redirect('index')
     else:
+        key = request.GET.get("key", "")
+        composers = []
+        for composer in Composer.objects.all():
+            if key in composer.name:
+                composers.append(composer)
         return render(request, "classcoll/all_composers.html", {
-            'composers': Composer.objects.all()
+            'composers': composers
         })
 
-@login_required(login_url='login')
 def composer(request, name):
     try:
         target = Composer.objects.filter(name=name).first()
     except:
         redirect('index')
     pieces = Piece.objects.filter(composer=target)
-    favorite = Favorite.objects.filter(user=request.user).first().composers.all()
+    favorite = []
+    if request.user.is_authenticated:
+        favorite = Favorite.objects.filter(user=request.user).first().composers.all()
     return render(request, "classcoll/composer.html", {
         'composer': target,
         'pieces': pieces,
         'favorite': favorite
     })
 
+@login_required(login_url='login')
 @csrf_exempt
 def favcomposer(request, id):
     try:
@@ -149,7 +172,8 @@ def favcomposer(request, id):
             fav.composers.add(target)
             fav.save()
             return JsonResponse({"message": "Remove from Favorite"}, status = 200)
-        
+
+@login_required(login_url='login')
 @csrf_exempt
 def favpiece(request, id):
     try:
@@ -179,7 +203,9 @@ def piece(request, name):
     for upvote in temp:
         if upvote.comment in comments:
             upvotes.append(upvote.comment)
-    favorite = Favorite.objects.filter(user=request.user).first().pieces.all()
+    favorite = []
+    if request.user.is_authenticated:
+        favorite = Favorite.objects.filter(user=request.user).first().pieces.all()
     
     return render(request, 'classcoll/piece.html', {
         'piece': target,
@@ -187,7 +213,8 @@ def piece(request, name):
         'upvotes': upvotes,
         'favorite': favorite
     })
-    
+
+@login_required(login_url='login')
 def favorite(request):
     user = request.user
     fav = Favorite.objects.filter(user=user).first()
@@ -198,6 +225,7 @@ def favorite(request):
         'composers': composers
     })
 
+@login_required(login_url='login')
 @csrf_exempt
 def comment(request, id):
     print('Hello World')
@@ -211,16 +239,16 @@ def comment(request, id):
             piece=target
         )
         newComment.save()
-        return JsonResponse(status=200)
+        return JsonResponse({'message': 'success'}, status=200)
     elif request.method == 'PUT':
         data = json.loads(request.body)
         existedComment = Comment.objects.filter(
-            id = id,
+            pk = id,
             user = request.user,
         ).first()
         existedComment.content = data.get('content')
         existedComment.save()
-        return JsonResponse(status = 200)
+        return JsonResponse({'message': 'success'}, status = 200)
     elif request.method == 'DELETE':
         existedComment = Comment.objects.filter(
             pk = id
@@ -228,6 +256,7 @@ def comment(request, id):
         existedComment.delete()
         return JsonResponse({'message': 'success'}, status = 200)
 
+@login_required(login_url='login')
 @csrf_exempt
 def upvote(request, id):
     if request.method == 'PUT':

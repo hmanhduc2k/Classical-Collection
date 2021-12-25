@@ -2,5 +2,39 @@
 {% load static %}
 
 {% block body %}
-    TODO
+    <div class="bg-light" style="opacity: 0.85;">
+        <div>
+            <h4>About:</h4>
+            <p>
+                Classical Collection is a web database of classical music 
+                and an MP3 player for you to enjoy classical music works.
+                It's like Spotify, but it's free :)
+            </p>
+        </div>
+        <hr>
+        <div>
+            <h3>Composer of the day:</h3>
+            <h4>{{composer.name}}<h4>
+            <div>
+                <div><img src="{{composer.image}}" width="200"></div>
+                <br>
+            </div>
+            <div id="biography">
+                <p style="font-size: 16px; font-weight: 400;">{{composer.biography}}</p>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <h3>Composition of the day:</h3>
+            <h4>{{piece.name}}<h4>
+            <h5>{{piece.composer.name}}</h5>
+            <audio controls>
+                <source src="/upload/{{piece.source}}" type="audio/mpeg">
+            </audio>
+            <p>{{piece.description}}</p>
+            <br>
+            <p>Musical period: {{ piece.period.era }}</p>
+            <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
+        </div>
+    </div>
 {% endblock %}

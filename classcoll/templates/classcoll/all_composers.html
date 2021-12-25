@@ -6,7 +6,7 @@
         <button id="showComposers" class="btn btn-primary">Composers</button>
         <button id="showForm" class="btn btn-primary">Add</button>
     </div>
-    <div class="bg-light">
+    <div class="bg-light" style="opacity: 0.85;">
         <div id="composerForm" style="display: none;">
             <h4>Add a new Composer</h4>
             <form method="POST" action="{% url 'all_composer'%}">
@@ -32,12 +32,18 @@
             </form>
         </div>
 
-        <div id="allComposers" class="row">
+        <div id="allComposers">
+            <form method="GET" action="{% url 'all_composer' %}" id="filterForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <h4>Search</h4>
+                    <input class="form-control" type="text" name="key">
+                    <input class="btn btn-success" type="submit">
+                </div>
+            </form>
+            <br>
             {% for composer in composers %}
-                <div class="card col-lg-4 text-center" style="border: 1px solid black;">
-                    <div>
-                        <img src="{{ composer.image }}" width="150">
-                    </div>
+                <div class="text-center" style="border: 1px solid black;">
                     <div>
                         <h4><a href="{% url 'composer' composer.name %}">{{ composer.name }}</a></h4>
                     </div>

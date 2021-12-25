@@ -19,3 +19,4 @@ def validatePassword(username, password):
         return messages[2]
     else:
         return messages[3]
+    

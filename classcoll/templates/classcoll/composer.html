@@ -8,13 +8,15 @@
             <div><img src="{{composer.image}}" width="200"></div>
             <br>
         </div>
-        <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
-            {% if composer in favorite %}
-                Remove from Favorite
-            {% else %}
-                Add to Favorite
-            {% endif %}
-        </button>
+        {% if user.is_authenticated %}
+            <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
+                {% if composer in favorite %}
+                    Remove from Favorite
+                {% else %}
+                    Add to Favorite
+                {% endif %}
+            </button>
+        {% endif %}
         <button id="showPieces" class="btn btn-success">Compositions</button>
         <button id="showBiography" class="btn btn-success">Biography</button>
         <br>

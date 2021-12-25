@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
+
     document.querySelectorAll('#favoriteComposer').forEach(item => 
         item.addEventListener('click', () => {
         console.log(item.dataset.value)
