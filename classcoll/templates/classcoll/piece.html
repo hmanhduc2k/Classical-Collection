@@ -35,18 +35,6 @@
             </div>
         </form>
         <br>
-        <div class="mb-1">
-            <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="sortBy" data-bs-toggle="dropdown" aria-expanded="false">
-                Sort by
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="sortBy">
-                <li><a class="dropdown-item" href="#">Newest</a></li>
-                <li><a class="dropdown-item" href="#">Random</a></li>
-                <li><a class="dropdown-item" href="#">Most upvoted</a></li>
-            </ul>
-            </div>
-        </div>
         <div>
             {% for comment in comments %}
                 <div style="border: 1px black solid; margin: 10px;">
@@ -85,10 +73,30 @@
                     </div>
                 </div>
             {% endfor %}
+
+            <div class="text-center">
+                <span class="current">
+                    Page {{ comments.number }} of {{ comments.paginator.num_pages }}
+                </span>
+            </div>
+            <nav aria-label="Page Navigation Example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                    {% for i in comments.paginator.page_range %}
+                        {% if i <= comments.number|add:2 and i >= comments.number|add:-2 %}
+                            <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ comments.paginator.num_pages }}">last &raquo;</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'classcoll/js/piece.js' %}"></script>
+    <script src="{% static 'classcoll/js/audiocontrol.js' %}"></script>
 {% endblock %}

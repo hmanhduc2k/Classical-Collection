@@ -22,12 +22,14 @@ class Composer(models.Model):
     
 class Period(models.Model):
     era = models.CharField(max_length=50)
+    description = models.TextField(null=True)
     
     def __str__(self) -> str:
         return f"{self.era}#{self.id}"
     
 class Difficulty(models.Model):
     rating = models.CharField(max_length=20)
+    description = models.TextField(null=True)
     
     def __str__(self) -> str:
         return f"{self.rating}#{self.id}"

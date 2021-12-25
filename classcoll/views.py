@@ -12,6 +12,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Count
+from django.core import paginator
+from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 
 
@@ -90,6 +92,13 @@ def allPieces(request):
         name = request.POST['name']
         composerName = request.POST['composer']
         composer = Composer.objects.filter(name=composerName).first()
+        if composer is None:
+            return render(request, 'classcoll/all_pieces.html', {
+            'periods': Period.objects.all(),
+                'difficulty': Difficulty.objects.all(),
+                'pieces': Piece.objects.all(),
+                'message': 'No composer found. Make sure that the name is exactly as it is.'
+            })
         description = request.POST['description']
         uploadedFile = request.FILES['document']
         period = Period.objects.filter(era=request.POST['period']).first()
@@ -103,14 +112,22 @@ def allPieces(request):
             difficulty = difficulty
         )
         newPiece.save()
-        # fs.save(uploadedFile.name, uploadedFile)
         return redirect('index')
     else:
         key = request.GET.get("key", "")
+        pr = request.GET.get("period", "All")
+        df = request.GET.get("difficulty", "All")
         pieces = []
         for piece in Piece.objects.all():
-            if key in piece.name:
+            cond1 = key in piece.name
+            cond2 = pr == piece.period.era or pr == "All"
+            cond3 = df == piece.difficulty.rating or df == "All"
+            if cond1 and cond2 and cond3:
                 pieces.append(piece)
+
+        paginator = Paginator(pieces, 10)
+        pageNumber = request.GET.get('page')
+        pieces = paginator.get_page(pageNumber)
         return render(request, 'classcoll/all_pieces.html', {
             'periods': Period.objects.all(),
             'difficulty': Difficulty.objects.all(),
@@ -122,6 +139,12 @@ def allComposers(request):
         name = request.POST['name']
         biography = request.POST['biography']
         image = request.POST['document']
+        
+        if Composer.objects.filter(name=name).first() is not None:
+            return render(request, "classcoll/all_composers.html", {
+                'composers': Composer.objects.all(),
+                'message': 'Composer has already existed!'
+            })
         newComposer = Composer(
             name=name,
             biography=biography,
@@ -135,6 +158,10 @@ def allComposers(request):
         for composer in Composer.objects.all():
             if key in composer.name:
                 composers.append(composer)
+                
+        paginator = Paginator(composers, 5)
+        pageNumber = request.GET.get('page')
+        composers = paginator.get_page(pageNumber)
         return render(request, "classcoll/all_composers.html", {
             'composers': composers
         })
@@ -148,6 +175,7 @@ def composer(request, name):
     favorite = []
     if request.user.is_authenticated:
         favorite = Favorite.objects.filter(user=request.user).first().composers.all()
+    
     return render(request, "classcoll/composer.html", {
         'composer': target,
         'pieces': pieces,
@@ -197,7 +225,7 @@ def piece(request, name):
         target = Piece.objects.filter(name=name).first()
     except:
         redirect('index')
-    comments = Comment.objects.filter(piece=target).annotate(upvotes=Count('upvote')).order_by('-time')
+    comments = Comment.objects.filter(piece=target).annotate(upvotes=Count('upvote')).order_by('-upvote')
     temp = Upvote.objects.filter(user=request.user)
     upvotes = []        # get a list of all upvoted comments by the users
     for upvote in temp:
@@ -206,6 +234,10 @@ def piece(request, name):
     favorite = []
     if request.user.is_authenticated:
         favorite = Favorite.objects.filter(user=request.user).first().pieces.all()
+    
+    paginator = Paginator(comments, 10)
+    pageNumber = request.GET.get('page')
+    comments = paginator.get_page(pageNumber)
     
     return render(request, 'classcoll/piece.html', {
         'piece': target,
@@ -275,9 +307,17 @@ def upvote(request, id):
             )
             upvoted.save()
             return JsonResponse({'status': True}, status = 200)
-        
-def sort(request, type):
-    if type == 'period':
-        return None
-    elif type == 'difficulty':
-        return None
+
+def period(request, name):
+    target = Period.objects.filter(era=name).first()
+    return render(request, 'classcoll/period.html', {
+        'periods': Period.objects.all(),
+        'target': target
+    })
+    
+def difficulty(request, name):
+    target = Difficulty.objects.filter(rating=name).first()
+    return render(request, 'classcoll/difficulty.html', {
+        'difficulties': Difficulty.objects.all(),
+        'target': target
+    })

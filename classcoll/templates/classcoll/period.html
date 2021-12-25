@@ -1,0 +1,21 @@
+{% extends "classcoll/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div class="bg-light">
+        <h3>{{ target.era }}</h3>
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="sortBy" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="sortBy">
+                {% for period in periods %}
+                    <li><a class="dropdown-item" href="{% url 'period' period.era %}">{{period.era}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <p>{{target.description}}</p>
+        </div>
+    </div>
+{% endblock %}

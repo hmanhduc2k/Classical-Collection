@@ -20,6 +20,7 @@
                 <div class="form-group">
                     <label>Composers</label>
                     <input required type="text" class="form-control" name="composer">
+                    <p style="color: red;">{{message}}</p>
                 </div>
                 <div class="form-floating">
                     <label>Short description</label>
@@ -30,16 +31,16 @@
                     <input required type="file" name="document" accept=".mp3">
                 </div>
                 <div>
-                    <label>Select Period</label>
-                    <select name="period">
+                    <label>Select Period:</label>
+                    <select class="btn-light" name="period">
                         {% for period in periods %}
                             <option value="{{period.era}}">{{period.era}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div>
-                    <label>Select Level of Difficulty</label>
-                    <select name="difficulty">
+                    <label>Select Level of Difficulty:</label>
+                    <select class="btn-light" name="difficulty">
                         {% for level in difficulty %}
                             <option value="{{level.rating}}">{{level.rating}}</option>
                         {% endfor %}
@@ -52,10 +53,28 @@
             <form method="GET" action="{% url 'all_piece' %}" id="filterForm">
                 {% csrf_token %}
                 <div class="form-group">
-                    <h4>Search</h4>
-                    <input class="form-control" type="text" name="key">
-                    <input class="btn btn-success" type="submit">
+                    <h4>Search for a work:</h4>
+                    <input class="form-control" type="text" name="key" placeholder="Enter a keyword and press Enter!">
                 </div>
+                <div class="form-group">
+                    <label>Filter by Period:</label>
+                    <select class="btn-light" name="period">
+                        <option value="All" selected>All</option>
+                        {% for period in periods %}
+                            <option value="{{period.era}}">{{period.era}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Filter by Level of Difficulty:</label>
+                    <select class="btn-light" name="difficulty">
+                        <option value="All" selected>All</option>
+                        {% for level in difficulty %}
+                            <option value="{{level.rating}}">{{level.rating}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info">Search</button>
             </form>
             {% for piece in pieces %}
                 <a href="{% url 'piece' piece.name %}">
@@ -67,6 +86,25 @@
                     </div>
                 </a>
             {% endfor %}
+
+            <div class="text-center">
+                <span class="current">
+                    Page {{ pieces.number }} of {{ pieces.paginator.num_pages }}
+                </span>
+            </div>
+            <nav aria-label="Page Navigation Example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                    {% for i in pieces.paginator.page_range %}
+                        {% if i <= pieces.number|add:2 and i >= pieces.number|add:-2 %}
+                            <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ pieces.paginator.num_pages }}">last &raquo;</a></li>
+                </ul>
+            </nav>
         </div>
         
     </div>

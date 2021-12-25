@@ -15,6 +15,9 @@ urlpatterns = [
     path('composer/<str:name>', views.composer, name="composer"),
     path('favcomposer/<str:id>', views.favcomposer, name='fav-composer'),
     
+    path('period/<str:name>', views.period, name="period"),
+    path('difficulty/<str:name>', views.difficulty, name="difficulty"),
+    
     path('favorite/', views.favorite, name="favorite"),
     path('comment/<str:id>', views.comment, name="comment"),
     path('upvote/<str:id>', views.upvote, name="upvote")
