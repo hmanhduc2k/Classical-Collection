@@ -2,7 +2,8 @@ from django.urls import path
 from classcoll.views import Attributes, Authentication, Composers, Discussion, Pieces, UserFavorite, Index
 
 urlpatterns = [
-    path("", Index.landingPage, name="index"),
+    path("", Index.homePage, name="index"),
+    
     path("login", Authentication.loginPage, name="login"),
     path("logout", Authentication.logoutPage, name="logout"),
     path("register", Authentication.registerPage, name="register"),

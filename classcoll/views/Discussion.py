@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 
 from ..models import Piece, Comment, Upvote
 
+MESSAGE_POST_COMMENT_SUCCESS = "Post comment successful"
+MESSAGE_EDIT_COMMENT_SUCCESS = "Edit comment successful"
+MESSAGE_DELETE_COMMENT_SUCCESS = "Delete comment successful"
+
 @login_required(login_url='login')
 @csrf_exempt
 def comment(request, id):
@@ -18,7 +22,7 @@ def comment(request, id):
             piece=target
         )
         newComment.save()
-        return JsonResponse({'message': 'success'}, status=200)
+        return JsonResponse({'message': MESSAGE_POST_COMMENT_SUCCESS}, status=200)
     elif request.method == 'PUT':
         data = json.loads(request.body)
         existedComment = Comment.objects.filter(
@@ -27,13 +31,13 @@ def comment(request, id):
         ).first()
         existedComment.content = data.get('content')
         existedComment.save()
-        return JsonResponse({'message': 'success'}, status = 200)
+        return JsonResponse({'message': MESSAGE_EDIT_COMMENT_SUCCESS}, status = 200)
     elif request.method == 'DELETE':
         existedComment = Comment.objects.filter(
             pk = id
         ).first()
         existedComment.delete()
-        return JsonResponse({'message': 'success'}, status = 200)
+        return JsonResponse({'message': MESSAGE_DELETE_COMMENT_SUCCESS}, status = 200)
 
 @login_required(login_url='login')
 @csrf_exempt

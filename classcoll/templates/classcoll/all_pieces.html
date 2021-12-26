@@ -2,13 +2,12 @@
 {% load static %}
 
 {% block body %}
-
-    <div>
-        <button class="btn btn-primary" id="showPieces">All pieces</button>
-        <button class="btn btn-primary" id="showForm">Upload</button>
-    </div>
-
-    <div class="bg-light" style="opacity: 0.8">
+    <div class="bg-light" style="opacity: 0.8; padding: 10px;">
+        <div>
+            <button class="btn btn-primary" id="showPieces">All pieces</button>
+            <button class="btn btn-primary" id="showForm">Upload</button>
+        </div>
+        <br>
         <div id="forms" style="display: none;">
             <h4 style="color: blue;">Upload</h4>
             <form method="POST", enctype="multipart/form-data">
@@ -27,10 +26,8 @@
                     <textarea required class="form-control" name="description" rows="3">
                     </textarea>
                 </div>
-                <div>
-                    <input required type="file" name="document" accept=".mp3">
-                </div>
-                <div>
+                <br>
+                <div class="form-group">
                     <label>Select Period:</label>
                     <select class="btn-light" name="period">
                         {% for period in periods %}
@@ -38,7 +35,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Select Level of Difficulty:</label>
                     <select class="btn-light" name="difficulty">
                         {% for level in difficulty %}
@@ -46,6 +43,11 @@
                         {% endfor %}
                     </select>
                 </div>
+                <br>
+                <div>
+                    <input required type="file" name="document" accept=".mp3">
+                </div>
+                <br>
                 <button class="btn btn-success" type="submit">Upload</button>
             </form>
         </div>
@@ -76,15 +78,16 @@
                 </div>
                 <button type="submit" class="btn btn-info">Search</button>
             </form>
+            <br>
+            <h4>All available results:</h4>
             {% for piece in pieces %}
-                <a href="{% url 'piece' piece.name %}">
-                    <div style="border: 1px solid black;">
-                        <h4>{{piece.name}}</h4>
-                        <audio controls>
-                            <source src="/upload/{{piece.source}}" type="audio/mpeg">
-                        </audio>
-                    </div>
-                </a>
+                <div style="border: 1px solid black;">
+                    <h5><a href="{% url 'piece' piece.name %}">{{piece.name}}</a>, 
+                        composed by <a href="{% url 'composer' piece.composer.name %}">{{piece.composer.name}}</a></h5>
+                    <audio controls>
+                        <source src="/upload/{{piece.source}}" type="audio/mpeg">
+                    </audio>
+                </div>
             {% endfor %}
 
             <div class="text-center">

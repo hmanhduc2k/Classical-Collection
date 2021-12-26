@@ -1,14 +1,13 @@
 {% extends "classcoll/layout.html" %}
 
 {% block body %}
-    <div style="min-height: 200px;"></div>
-    <div class="row" style="min-height: 400px;">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <div class="bg-light" style="border: 2px solid black; opacity: 0.8;">
+    <div style="display: flex; justify-content: center">
+        <div style="height: 600px; display: flex; align-items: center;">
+            <div class="text-center bg-light" 
+            style="border: 2px solid black; opacity: 0.8; width: 650px;">
                 <div style="padding: 10px;">
-                    <h2>Register</h2>
-
+                    <h2>Register for free</h2>
+                    <br>
                     {% if message %}
                         <div>{{ message }}</div>
                     {% endif %}
@@ -27,6 +26,12 @@
                         <div class="form-group">
                             <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
                         </div>
+                        <div class="text-left">
+                            <p>
+                                Note: Password should be at least 8 characters long, should not be similar to username,
+                                and should contain at least one alphanumeric character and special character
+                            </p>
+                        </div>
                         <input class="btn btn-primary" type="submit" value="Register">
                     </form>
 
@@ -34,6 +39,5 @@
                 </div>
             </div>
         </div>
-        <div class="col-3"></div>
     </div>
 {% endblock %}

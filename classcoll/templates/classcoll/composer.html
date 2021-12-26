@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light">
+    <div class="bg-light" style="opacity: 0.8; padding: 10px;">
         <h2>{{composer.name}}<h2>
         <div>
             <div><img src="{{composer.image}}" width="200"></div>
@@ -20,12 +20,13 @@
         <button id="showPieces" class="btn btn-success">Compositions</button>
         <button id="showBiography" class="btn btn-success">Biography</button>
         <br>
-        <br>
+        <hr>
         <div id="biography" style="display: none;">
+            <h4>Biography</h4>
             <p style="font-size: 16px; font-weight: 400;">{{composer.biography}}</p>
         </div>
-        <hr>
         <div class="bg-light" id="allPieces">
+            <h4>Works composed by {{ composer.name }}</h4>
             {% for piece in pieces %}
                 <div>
                     <a style="font-size: 18px;" href="{% url 'piece' piece.name %}">

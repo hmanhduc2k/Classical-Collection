@@ -2,17 +2,16 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light">
-        <div>
-            <h6> {{ user.username }} </h6>
-            <h3> Favorite </h3>
+    <div class="bg-light" style="opacity: 0.85;">
+        <div style="padding: 10px;">
+            <h4> User {{ user.username }} Favorite: </h4>
         </div>
-        <div>
+        <div style="padding: 10px;">
             <button id="btnPiece" class="btn btn-primary">Pieces</button>
             <button id="btnComposer" class="btn btn-success">Composers</button>
         </div>
 
-        <div id="piece" style="display: none;">
+        <div id="piece" style="display: none; padding: 10px;">
             {% for piece in pieces %}
                 <div>
                     <a href="{% url 'piece' piece.name%}">{{piece.name}} by {{piece.composer.name}}</a>
@@ -20,10 +19,9 @@
             {% endfor %}
         </div>
 
-        <div id="composer">
+        <div id="composer" style="padding: 10px;">
             {% for composer in composers %}
                 <div>
-                    <img src="{{composer.image}}" width="150">
                     <a href="{% url 'composer' composer.name%}">{{composer.name}}</a>
                 </div>
             {% endfor %}

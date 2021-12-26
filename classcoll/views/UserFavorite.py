@@ -5,6 +5,11 @@ from django.contrib.auth.decorators import login_required
 
 from ..models import Favorite, Composer, Piece
 
+FAVORITE_FILE = 'classcoll/favorite.html'
+
+MESSAGE_ADD_FAVORITE = "Add to Favorite"
+MESSAGE_REMOVE_FAVORITE = "Remove from Favorite"
+
 @login_required(login_url='login')
 @csrf_exempt
 def favoriteComposer(request, id):
@@ -18,11 +23,11 @@ def favoriteComposer(request, id):
         if target in fav.composers.all():
             fav.composers.remove(target)
             fav.save()
-            return JsonResponse({"message": "Add to Favorite"}, status=200)
+            return JsonResponse({"message": MESSAGE_ADD_FAVORITE}, status=200)
         else:
             fav.composers.add(target)
             fav.save()
-            return JsonResponse({"message": "Remove from Favorite"}, status = 200)
+            return JsonResponse({"message": MESSAGE_REMOVE_FAVORITE}, status = 200)
 
 @login_required(login_url='login')
 @csrf_exempt
@@ -37,11 +42,11 @@ def favoritePiece(request, id):
         if target in fav.pieces.all():
             fav.pieces.remove(target)
             fav.save()
-            return JsonResponse({'message': 'Add to Favorite'}, status=200)
+            return JsonResponse({'message': MESSAGE_ADD_FAVORITE}, status=200)
         else:
             fav.pieces.add(target)
             fav.save()
-            return JsonResponse({'message': 'Remove from Favorite'}, status=200)
+            return JsonResponse({'message': MESSAGE_REMOVE_FAVORITE}, status=200)
 
 @login_required(login_url='login')
 def userFavorite(request):
@@ -49,7 +54,7 @@ def userFavorite(request):
     fav = Favorite.objects.filter(user=user).first()
     pieces = fav.pieces.all()
     composers = fav.composers.all()
-    return render(request, 'classcoll/favorite.html', {
+    return render(request, FAVORITE_FILE, {
         'pieces': pieces,
         'composers': composers
     })

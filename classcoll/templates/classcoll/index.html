@@ -2,17 +2,21 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light" style="opacity: 0.85;">
-        <div>
+    <div class="bg-light" style="opacity: 0.8;">
+        <div style="padding: 10px;">
             <h4>About:</h4>
             <p>
                 Classical Collection is a web database of classical music 
                 and an MP3 player for you to enjoy classical music works.
                 It's like Spotify, but it's free :)
             </p>
+            <p>
+                Credit to Background Image: Frederick the Great Playing the Flute at Sanssouci
+                by German painter Adolph Menzel (on 1852)
+            </p>
         </div>
         <hr>
-        <div>
+        <div style="padding: 10px;">
             <h3>Composer of the day:</h3>
             <h4>{{composer.name}}<h4>
             <div>
@@ -24,7 +28,7 @@
             </div>
         </div>
         <hr>
-        <div>
+        <div style="padding: 10px;">
             <h3>Composition of the day:</h3>
             <h4>{{piece.name}}<h4>
             <h5>{{piece.composer.name}}</h5>
