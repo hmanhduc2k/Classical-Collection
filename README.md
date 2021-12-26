@@ -34,10 +34,8 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
     - Unit testing and Integration Testing
     - Documentation (through README.md)
 6. Utilize various advanced and new concepts of Python and Computer Science, such as:
-    - Regex matching
+    - Regular expression matching
     - Similarity ratio
-
-## Files
 
 ## How to run the application
 0. Prerequisites:
@@ -48,8 +46,6 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
 2. Run `python manage.py runserver`, and access the local host `http://127.0.0.1:8000` to use the web application
 
 Should there be any problems running the files, please make sure that Django and Python are installed to the system. Alternatively, you can run `python3` instead of `python` if you are using Linux/Ubuntu.
-
-## Additional Information
 
 ## Comprehensive list of features:
 1. Authentication (including password strength check)
@@ -69,3 +65,44 @@ Should there be any problems running the files, please make sure that Django and
 3. Deployment using Heroku/Netlify or other web-hosting services
 4. Incorporating Cloud database for media uploading
 5. More extension features and possible usage of AI/ML
+
+## File structure
+
+### Python files:
+1. `models.py`: Create the models for Django entities and relations
+2. `urls.py`: Create the urls for the view of the web application
+3. View files, set on a subdirectory of ClassColl:
+    - `Attributes.py`: Deal with the model `Period` and `Difficulty` and their related views
+    - `Authentication.py`: Deal with user login, logout, and registration of account
+    - `Composers.py`: Deal with the composer pages (all composers, single composers,...)
+    - `Discussion.py`: Deal with user interaction activities like Comments and Upvote
+    - `Index.py`: Deal with the landing page (home page)
+    - `Pieces.py`: Deal with the musical work page (list all works and list a single work)
+    - `UserFavorite.py`: Deal with the favorite works and composers of a user
+4. Utility files, set on a subdirectory of ClassColl:
+    - `ComposerSearch.py`: Search for a composer with the nearest similarity to the user input
+    - `PasswordStrength.py`: Assert the minimal strength of a password that user is registering for
+5. Test files (to be added later on...)
+
+### HTML files:
+1. All available HTML files:
+    - `all_composers.html`: list all composers on the page (with pagination)
+    - `all_pieces.html`: list all musical works on the page (with pagination)
+    - `composer.html`: list the details of a composer and his related works
+    - `difficulty.html`: list the difficulty of a musical work by the dropdown select button
+    - `error.html`: if user search for an invalid query related to composer or piece
+    - `favorite.html`: list the user favorite pieces and composers
+    - `index.html`: redirect the landing page with the randomized and about content
+    - `layout.html`: the root structure of the HTML content, including a top nav-bar
+    - `login.html`: redirect users to a login page to signin the web application
+    - `period.html`: list the period of a musical work by the dropdown select button
+    - `piece.html`: list the details of a piece of music and its comments/upvotes
+    - `register.html`: redirect users to a registration page to create a new account
+
+### JavaScript files:
+    - `all_composers.js`: interact with the all_composers page to hide and show the views when buttons are clicked
+    - `all_pieces.js`: interact with the all_pieces page to hide and show the views when buttons are clicked
+    - `audiocontrol.js`: controls the audio of a piece of music
+    - `composer.js`: interact with the button to add favorite, hide and show content as requested
+    - `favorite.js`: interact to show the favorite composers or pieces
+    - `piece.js`: interact to show the piece, comment, edit comment, delete comment, or upvote a comment as requested...
