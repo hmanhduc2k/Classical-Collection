@@ -100,6 +100,7 @@ Should there be any problems running the files, please make sure that Django and
     - `register.html`: redirect users to a registration page to create a new account
 
 ### JavaScript files:
+1. All available JavaScript files:
     - `all_composers.js`: interact with the all_composers page to hide and show the views when buttons are clicked
     - `all_pieces.js`: interact with the all_pieces page to hide and show the views when buttons are clicked
     - `audiocontrol.js`: controls the audio of a piece of music
