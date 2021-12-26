@@ -51,7 +51,7 @@ def allPieces(request):
             if cond1 and cond2 and cond3:
                 pieces.append(piece)
 
-        paginator = Paginator(pieces, 10)
+        paginator = Paginator(pieces, 5)
         pageNumber = request.GET.get('page')
         pieces = paginator.get_page(pageNumber)
         return render(request, ALL_PIECE_FILE, {

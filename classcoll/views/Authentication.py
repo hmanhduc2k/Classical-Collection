@@ -19,13 +19,9 @@ MESSAGE_PASSWORD_COMPLEXITY = "Invalid Registration: Passwords must contain at l
 
 def loginPage(request):
     if request.method == "POST":
-
-        # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
@@ -47,7 +43,6 @@ def registerPage(request):
         username = request.POST["username"]
         email = request.POST["email"]
 
-        # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         

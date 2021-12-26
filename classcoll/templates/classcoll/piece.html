@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light" style="opacity: 0.8; padding: 10px;">
+    <div class="bg-light my-background">
         <button id="showInfo" class="btn btn-info">Information</button>
         <button id="showComment" class="btn btn-info">Comments</button>
         <br>
@@ -15,8 +15,8 @@
             </audio>
             <p>{{piece.description}}</p>
             <br>
-            <p>Musical period: {{ piece.period.era }}</p>
-            <p>Difficulty level (if applicable): {{ piece.difficulty.rating }}</p>
+            <p>Musical period: <a href="{% url 'period' piece.period.era %}">{{ piece.period.era }}</a></p>
+            <p>Difficulty level (if applicable): <a href="{% url 'difficulty' piece.difficulty.rating %}">{{ piece.difficulty.rating }}</a></p>
             {% if user.is_authenticated %}
                 <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
                     {% if piece in favorite %}

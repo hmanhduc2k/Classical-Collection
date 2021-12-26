@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-    <div class="bg-light" style="opacity: 0.8; padding: 10px;">
+    <div class="bg-light my-background">
         <div>
             <button class="btn btn-primary" id="showPieces">All pieces</button>
             <button class="btn btn-primary" id="showForm">Upload</button>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label>Filter by Period:</label>
-                    <select class="btn-light" name="period">
+                    <select class="form-select form-select-lg" name="period">
                         <option value="All" selected>All</option>
                         {% for period in periods %}
                             <option value="{{period.era}}">{{period.era}}</option>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="form-group">
                     <label>Filter by Level of Difficulty:</label>
-                    <select class="btn-light" name="difficulty">
+                    <select class="form-select form-select-lg" name="difficulty">
                         <option value="All" selected>All</option>
                         {% for level in difficulty %}
                             <option value="{{level.rating}}">{{level.rating}}</option>
@@ -81,11 +81,12 @@
             <br>
             <h4>All available results:</h4>
             {% for piece in pieces %}
-                <div style="border: 1px solid black;">
+                <div class="solid-border" style="padding: 10px;">
                     <h5><a href="{% url 'piece' piece.name %}">{{piece.name}}</a>, 
                         composed by <a href="{% url 'composer' piece.composer.name %}">{{piece.composer.name}}</a></h5>
                     <audio controls>
                         <source src="/upload/{{piece.source}}" type="audio/mpeg">
+                        Your browser must be able to support mp3/mpeg type of files
                     </audio>
                 </div>
             {% endfor %}

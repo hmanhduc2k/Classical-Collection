@@ -1,16 +1,27 @@
-.svg :hover {
+svg:hover {
     cursor: pointer;
 }
 
-.opaque-background {
+.my-background {
     opacity: 0.8;
+    padding: 10px;
 }
 
-.login-form {
-    border: 2px solid black; 
-    opacity: 0.8; 
-    position: absolute; 
-    top: 250px; 
-    left: 500px; 
-    width: 500px;
+.center-width {
+    display: flex;
+    justify-content: center;
+}
+
+.center-height {
+    display: flex;
+    align-items: center;
+    height: 600px;
+}
+
+.solid-border {
+    border: 2px solid black;
+}
+
+.auth-form {
+    width: 650px;
 }
