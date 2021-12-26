@@ -40,6 +40,14 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
 ## Files
 
 ## How to run the application
+0. Prerequisites:
+    - Have a web browser that supports MP3 reading/loading/playing
+    - Is connected to the Internet
+    - Have installed Django and Python to the computer. The application is developed using Python 3.9.5 and Django 3.2.6 and can work on any version higher on that
+1. Access the inner files of Classical-Collections, run `python manage.py makemigrations`, then run `python manage.py migrate`
+2. Run `python manage.py runserver`, and access the local host `http://127.0.0.1:8000` to use the web application
+
+Should there be any problems running the files, please make sure that Django and Python are installed to the system. Alternatively, you can run `python3` instead of `python` if you are using Linux/Ubuntu.
 
 ## Additional Information
 
