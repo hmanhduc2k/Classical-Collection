@@ -13,14 +13,14 @@ In addition, Classical Collection is notably more complex than all of my previou
 
 
 1. The Application has 8 different models. This includes:
-  - User (for authentication purpose)
-  - Composer (representing a composer of classical music)
-  - Piece (representing a classical music composition)
-  - Favorite (representing a list of user's favorite composer and pieces)
-  - Period (representing the classical music era the works are written in)
-  - Difficulty (if applicable for piano, representing how difficult the composition is)
-  - Comment (representing a comment on each musical piece)
-  - Upvote (representing likes for comment)
+    - User (for authentication purpose)
+    - Composer (representing a composer of classical music)
+    - Piece (representing a classical music composition)
+    - Favorite (representing a list of user's favorite composer and pieces)
+    - Period (representing the classical music era the works are written in)
+    - Difficulty (if applicable for piano, representing how difficult the composition is)
+    - Comment (representing a comment on each musical piece)
+    - Upvote (representing likes for comment)
 2. The application uses HTML, CSS, and JavaScript for front-end user interaction. For the back-end, it uses Django, Python, and SQLite3 database.
 3. Users can post a classical music composer and post a work of the composer themselves, including a MP3 file for the piece they are uploading which will be controlled
 and used by the web application to play the music. Users can also choose to add the composers and pieces to their personal favorite or remove them. In each pieces, users
@@ -28,14 +28,14 @@ have the option to write a comment, read others' comments, edit their comment, o
 a composer or a piece of work, and they can sort the comment by time and upvote for their convenience.
 4. Good practice of User Interfaces are implemented - with application of the Single-Page-Application principle and usage of Pagination to limit the number of entries shown.
 5. Utilize good practices of software engineering. This includes:
-  - Package restructure and organization
-  - Some adherence to OOP principle and design pattern of SWE
-  - Code quality
-  - Unit testing and Integration Testing
-  - Documentation (through README.md)
+    - Package restructure and organization
+    - Some adherence to OOP principle and design pattern of SWE
+    - Code quality
+    - Unit testing and Integration Testing
+    - Documentation (through README.md)
 6. Utilize various advanced and new concepts of Python and Computer Science, such as:
-  - Regex matching
-  - Similarity ratio
+    - Regex matching
+    - Similarity ratio
 
 ## Files
 
@@ -54,3 +54,10 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
 8. Sort pieces by period of composition
 9. Sort pieces by level of difficulties
 10. Filter search a composer or a piece
+
+## Plan for future extension (Post-CS50W grading):
+1. Adding CI/CD pipeline and utilizing GitHub Actions
+2. Add GUI Web Testing
+3. Deployment using Heroku/Netlify or other web-hosting services
+4. Incorporating Cloud database for media uploading
+5. More extension features and possible usage of AI/ML
