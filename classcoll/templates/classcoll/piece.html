@@ -10,7 +10,13 @@
         <div id="pieceInfo">
             <h2>{{piece.name}}<h2>
             <h5><a href="{% url 'composer' piece.composer.name%}">{{piece.composer.name}}</a></h5>
-            {% include 'classcoll/audiocontrols.html' %}
+            <br>
+            <div id="audioHolder">
+                <audio id="audioControl" controls style="width: 800px;">
+                    <source src="/upload/{{piece.source}}" type="audio/mpeg">
+                </audio>
+            </div>
+            <br>
             <p>{{piece.description}}</p>
             <br>
             <p>Musical period: <a href="{% url 'period' piece.period.era %}">{{ piece.period.era }}</a></p>
@@ -79,5 +85,5 @@
 
 {% block script %}
     <script src="{% static 'classcoll/js/piece.js' %}"></script>
-    <script src="{% static 'classcoll/js/audiocontrol.js' %}"></script>
+    <script src="{% static 'classcoll/js/audiocontrols.js' %}"></script>
 {% endblock %}

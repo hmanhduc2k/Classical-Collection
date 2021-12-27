@@ -29,7 +29,7 @@
                 <br>
                 <div class="form-group">
                     <label>Select Period:</label>
-                    <select class="btn-light" name="period">
+                    <select class="form-select form-select-lg" name="period">
                         {% for period in periods %}
                             <option value="{{period.era}}">{{period.era}}</option>
                         {% endfor %}
@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <label>Select Level of Difficulty:</label>
-                    <select class="btn-light" name="difficulty">
+                    <select class="form-select form-select-lg" name="difficulty">
                         {% for level in difficulty %}
                             <option value="{{level.rating}}">{{level.rating}}</option>
                         {% endfor %}
@@ -84,7 +84,7 @@
                 <div class="solid-border" style="padding: 10px;">
                     <h5><a href="{% url 'piece' piece.name %}">{{piece.name}}</a>, 
                         composed by <a href="{% url 'composer' piece.composer.name %}">{{piece.composer.name}}</a></h5>
-                    <audio controls>
+                    <audio controls style="width: 600px;">
                         <source src="/upload/{{piece.source}}" type="audio/mpeg">
                         Your browser must be able to support mp3/mpeg type of files
                     </audio>
