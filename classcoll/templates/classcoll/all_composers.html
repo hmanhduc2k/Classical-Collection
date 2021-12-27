@@ -4,8 +4,8 @@
 {% block body %}
     <div class="bg-light my-background">
         <div>
-            <button id="showComposers" class="btn btn-primary">Composers</button>
-            <button id="showForm" class="btn btn-primary">Add</button>
+            <button id="showComposers" class="btn btn-info">Composers</button>
+            <button id="showForm" class="btn btn-info">Add</button>
         </div>
         <br>
         <div id="composerForm" style="display: none;">
@@ -53,24 +53,7 @@
                 </div>
             {% endfor %}
 
-            <div class="text-center">
-                <span class="current">
-                    Page {{ composers.number }} of {{ composers.paginator.num_pages }}
-                </span>
-            </div>
-            <nav aria-label="Page Navigation Example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    {% for i in composers.paginator.page_range %}
-                        {% if i <= composers.number|add:2 and i >= composers.number|add:-2 %}
-                            <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="?page={{ composers.paginator.num_pages }}">last &raquo;</a></li>
-                </ul>
-            </nav>
+            {% include 'classcoll/pagination.html' with list=composers %}
         </div>
     </div>
 {% endblock %}

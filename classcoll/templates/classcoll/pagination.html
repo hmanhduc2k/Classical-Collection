@@ -1,0 +1,18 @@
+<div class="text-center">
+    <span class="current">
+        Page {{ list.number }} of {{ list.paginator.num_pages }}
+    </span>
+</div>
+<nav aria-label="Page Navigation Example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        {% for i in list.paginator.page_range %}
+            {% if i <= list.number|add:2 and i >= list.number|add:-2 %}
+                <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item"><a class="page-link" href="#">...</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ list.paginator.num_pages }}">last &raquo;</a></li>
+    </ul>
+</nav>

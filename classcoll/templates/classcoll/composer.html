@@ -9,7 +9,7 @@
             <br>
         </div>
         {% if user.is_authenticated %}
-            <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-secondary">
+            <button data-value="{{composer.id}}" id="favoriteComposer" class="btn btn-info bi bi-star-fill">
                 {% if composer in favorite %}
                     Remove from Favorite
                 {% else %}
@@ -17,8 +17,8 @@
                 {% endif %}
             </button>
         {% endif %}
-        <button id="showPieces" class="btn btn-success">Compositions</button>
-        <button id="showBiography" class="btn btn-success">Biography</button>
+        <button id="showPieces" class="btn btn-info">Compositions</button>
+        <button id="showBiography" class="btn btn-info">Biography</button>
         <br>
         <hr>
         <div id="biography" style="display: none;">

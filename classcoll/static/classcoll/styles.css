@@ -1,4 +1,8 @@
-svg:hover {
+i:hover {
+    cursor: pointer;
+}
+
+img:hover {
     cursor: pointer;
 }
 
@@ -23,5 +27,5 @@ svg:hover {
 }
 
 .auth-form {
-    width: 650px;
+    width: 600px;
 }

@@ -10,15 +10,13 @@
         <div id="pieceInfo">
             <h2>{{piece.name}}<h2>
             <h5><a href="{% url 'composer' piece.composer.name%}">{{piece.composer.name}}</a></h5>
-            <audio controls>
-                <source src="/upload/{{piece.source}}" type="audio/mpeg">
-            </audio>
+            {% include 'classcoll/audiocontrols.html' %}
             <p>{{piece.description}}</p>
             <br>
             <p>Musical period: <a href="{% url 'period' piece.period.era %}">{{ piece.period.era }}</a></p>
             <p>Difficulty level (if applicable): <a href="{% url 'difficulty' piece.difficulty.rating %}">{{ piece.difficulty.rating }}</a></p>
             {% if user.is_authenticated %}
-                <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-secondary">
+                <button data-value="{{piece.id}}" id="favoritePiece" class="btn btn-info bi bi-star-fill">
                     {% if piece in favorite %}
                         Remove from Favorite 
                     {% else %}
@@ -48,19 +46,15 @@
                                 <span id="upvoteCount">{{ comment.upvotes }}</span>
                                 <span id="upvote" data-value="{{comment.id}}">
                                     {% if comment not in upvotes %}
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                                        </svg>
+                                        <i class="bi bi-hand-thumbs-up"></i>
                                     {% else %}
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                                        </svg>
+                                        <i class="bi bi-hand-thumbs-up-fill"></i>
                                     {% endif %}
                                 </span>
                             </p>
                             {% if comment.user == user %}
-                                <button style="height: 25px; font-size: 10px;" id="edit" class="btn btn-warning">Edit</button>
-                                <button style="height: 25px; font-size: 10px;" id="delete" data-value="{{comment.id}}" class="btn btn-danger">Delete</button>
+                                <button id="edit" class="btn btn-warning bi bi-pen"></button>
+                                <button id="delete" data-value="{{comment.id}}" class="btn btn-danger bi bi-trash"></button>
 
                                 <form style="display: none;" method="POST" id="commentEdit" data-value="{{comment.id}}" >
                                     {% csrf_token %}
@@ -77,24 +71,7 @@
                     </div>
                 {% endfor %}
 
-                <div class="text-center">
-                    <span class="current">
-                        Page {{ comments.number }} of {{ comments.paginator.num_pages }}
-                    </span>
-                </div>
-                <nav aria-label="Page Navigation Example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        {% for i in comments.paginator.page_range %}
-                            {% if i <= comments.number|add:2 and i >= comments.number|add:-2 %}
-                                <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="?page={{ comments.paginator.num_pages }}">last &raquo;</a></li>
-                    </ul>
-                </nav>
+                {% include 'classcoll/pagination.html' with list=comments %}
             </div>
         </div>
     </div>

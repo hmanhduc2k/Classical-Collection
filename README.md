@@ -107,3 +107,5 @@ Should there be any problems running the files, please make sure that Django and
     - `composer.js`: interact with the button to add favorite, hide and show content as requested
     - `favorite.js`: interact to show the favorite composers or pieces
     - `piece.js`: interact to show the piece, comment, edit comment, delete comment, or upvote a comment as requested...
+
+## Acknowledgements:
