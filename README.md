@@ -13,14 +13,14 @@ In addition, Classical Collection is notably more complex than all of my previou
 
 
 1. The Application has 8 different models. This includes:
-    - User (for authentication purpose)
-    - Composer (representing a composer of classical music)
-    - Piece (representing a classical music composition)
-    - Favorite (representing a list of user's favorite composer and pieces)
-    - Period (representing the classical music era the works are written in)
-    - Difficulty (if applicable for piano, representing how difficult the composition is)
-    - Comment (representing a comment on each musical piece)
-    - Upvote (representing likes for comment)
+    - User (entity, for authentication purpose)
+    - Composer (entity, representing a composer of classical music)
+    - Piece (entity, representing a classical music composition)
+    - Favorite (relation, representing a list of user's favorite composer and pieces)
+    - Period (entity, representing the classical music era the works are written in)
+    - Difficulty (entity, if applicable for piano, representing how difficult the composition is)
+    - Comment (relation, representing a comment on each musical piece)
+    - Upvote (relation, representing likes for comment)
 2. The application uses HTML, CSS, and JavaScript for front-end user interaction. For the back-end, it uses Django, Python, and SQLite3 database.
 3. Users can post a classical music composer and post a work of the composer themselves, including a MP3 file for the piece they are uploading which will be controlled
 and used by the web application to play the music. Users can also choose to add the composers and pieces to their personal favorite or remove them. In each pieces, users
@@ -31,7 +31,7 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
     - Package restructure and organization
     - Some adherence to OOP principle and design pattern of SWE
     - Code quality
-    - Unit testing and Integration Testing
+    - Some Unit Testings
     - Documentation (through README.md)
 6. Utilize various advanced and new concepts of Python and Computer Science, such as:
     - Regular expression matching
@@ -48,16 +48,17 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
 Should there be any problems running the files, please make sure that Django and Python are installed to the system. Alternatively, you can run `python3` instead of `python` if you are using Linux/Ubuntu.
 
 ## Comprehensive list of features:
-1. Authentication (including password strength check)
+1. Authentication (including password strength check for registration)
+    * Rule: Password must have at least 8 characters, must not be >90% similar to username, and must contain at least an alphanumeric character and a special character
 2. Uploading or View a Composer
 3. Uploading or View a Piece
 4. Play the MP3 file and controls them by various means (volume, timestamp, downloading, muting...)
 5. Write, update, and delete comments on each pieces of music
 6. Upvoting comments
-7. Sort comments by upvote count and/or time posted
-8. Sort pieces by period of composition
-9. Sort pieces by level of difficulties
-10. Filter search a composer or a piece
+7. Filter search a work by period of composition, difficulty, or query
+8. Filter search a composer or a piece by query
+9. View, save, or remove favorite composers/pieces from personal list
+10. View description of difficulty or periods of composition
 
 ## Plan for future extension (Post-CS50W grading):
 1. Adding CI/CD pipeline and utilizing GitHub Actions
@@ -98,12 +99,12 @@ Should there be any problems running the files, please make sure that Django and
     - `period.html`: list the period of a musical work by the dropdown select button
     - `piece.html`: list the details of a piece of music and its comments/upvotes
     - `register.html`: redirect users to a registration page to create a new account
+    - `pagination.html`: serves as a common template for pagination purposes
 
 ### JavaScript files:
 1. All available JavaScript files:
     - `all_composers.js`: interact with the all_composers page to hide and show the views when buttons are clicked
     - `all_pieces.js`: interact with the all_pieces page to hide and show the views when buttons are clicked
-    - `audiocontrol.js`: controls the audio of a piece of music
     - `composer.js`: interact with the button to add favorite, hide and show content as requested
     - `favorite.js`: interact to show the favorite composers or pieces
     - `piece.js`: interact to show the piece, comment, edit comment, delete comment, or upvote a comment as requested...
