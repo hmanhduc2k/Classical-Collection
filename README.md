@@ -3,14 +3,12 @@
 Classical Collection is a web database and web MP3 player specific to Western classical music. It aims to document notable composers of classical music, their works,
 and serve as a platform to play their works. Kind of like Spotify, but with a more narrowed scope.
 
-
 This project is my submission for the course CS50 Web Programming in Python and JavaScript offered by Harvard.
 
 ## Distinctiveness and Complexity
 Classical Collection has some of its minor concepts inspired from the previous projects, but the overarching concepts are completely unique. It is somewhat a crossover of
 YouTube and Spotify for music playing and documentation of classical music. It is not an e-commerce website and utilize no relevant concepts to e-commerce except for commenting functions. Similarly, this is not a social network media website except for the commenting and upvoting function which is similar but slightly more complex.
 In addition, Classical Collection is notably more complex than all of my previous 5 projects. The following are the evidence for this claim:
-
 
 1. The Application has 8 different models. This includes:
     - User (entity, for authentication purpose)
@@ -31,7 +29,7 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
     - Package restructure and organization
     - Some adherence to OOP principle and design pattern of SWE
     - Code quality
-    - Some Unit Testings
+    - Unit Testings
     - Documentation (through README.md)
 6. Utilize various advanced and new concepts of Python and Computer Science, such as:
     - Regular expression matching
@@ -41,7 +39,7 @@ a composer or a piece of work, and they can sort the comment by time and upvote 
 0. Prerequisites:
     - Have a web browser that supports MP3 reading/loading/playing
     - Is connected to the Internet
-    - Have installed Django and Python to the computer. The application is developed using Python 3.9.5 and Django 3.2.6 and can work on any version higher on that
+    - Have installed Django and Python to the computer. The application is developed using Python 3.9.5 and Django 3.2.6 and can work on any version higher than that
 1. Access the inner files of Classical-Collections, run `python manage.py makemigrations`, then run `python manage.py migrate`
 2. Run `python manage.py runserver`, and access the local host `http://127.0.0.1:8000` to use the web application
 
@@ -58,11 +56,11 @@ Should there be any problems running the files, please make sure that Django and
 7. Filter search a work by period of composition, difficulty, or query
 8. Filter search a composer or a piece by query
 9. View, save, or remove favorite composers/pieces from personal list
-10. View description of difficulty or periods of composition
+10. View (or edit if have administration access) the descriptions of difficulty or periods of composition
 
 ## Plan for future extension (Post-CS50W grading):
 1. Adding CI/CD pipeline and utilizing GitHub Actions
-2. Add GUI Web Testing
+2. Add more testing (including GUI Web Testing)
 3. Deployment using Heroku/Netlify or other web-hosting services
 4. Incorporating Cloud database for media uploading
 5. More extension features and possible usage of AI/ML
@@ -83,7 +81,11 @@ Should there be any problems running the files, please make sure that Django and
 4. Utility files, set on a subdirectory of ClassColl:
     - `ComposerSearch.py`: Search for a composer with the nearest similarity to the user input
     - `PasswordStrength.py`: Assert the minimal strength of a password that user is registering for
-5. Test files (to be added later on...)
+    - `PieceSearch.py`: Test condition of a piece filtering (by name, period, and difficulty)
+5. Test files
+    - `UserTest.py`: Test authentication and utils of PasswordStrength class
+    - `ComposerTest.py`: Test composer searching and matching of 80% similarity
+    - `PieceTest.py`: Test matching condition of piece filtering
 
 ### HTML files:
 1. All available HTML files:
@@ -110,3 +112,12 @@ Should there be any problems running the files, please make sure that Django and
     - `piece.js`: interact to show the piece, comment, edit comment, delete comment, or upvote a comment as requested...
 
 ## Acknowledgements:
+
+All sample datas are taken from YouTube and Wikipedia, and I do not own anything. I used the data purely for demonstration and sample
+purposes, and I do not claim them as my own.
+
+Acknowledgement for the background has been done on the Index page.
+
+Acknowledgement to Adobe Spark for the logo I have created on their platform
+
+Acknowledgement to Django documentations and Python documentations for reference to some concepts I have utilized (Difference Library, Regular Expressions...)

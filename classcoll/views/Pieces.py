@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator
 
 from ..models import *
-from classcoll.utils import ComposerSearch
+from classcoll.utils import ComposerSearch, PieceSearch
 
 KEYWORD_ALL = "All"
 
@@ -45,10 +45,7 @@ def allPieces(request):
         df = request.GET.get("difficulty", KEYWORD_ALL)
         pieces = []
         for piece in Piece.objects.all():
-            cond1 = key in piece.name
-            cond2 = pr == piece.period.era or pr == KEYWORD_ALL
-            cond3 = df == piece.difficulty.rating or df == KEYWORD_ALL
-            if cond1 and cond2 and cond3:
+            if PieceSearch.match(piece, key, pr, df):
                 pieces.append(piece)
 
         paginator = Paginator(pieces, 5)
