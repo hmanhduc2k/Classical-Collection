@@ -8,7 +8,7 @@
         <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
         <li class="page-item"><a class="page-link" href="#">...</a></li>
         {% for i in list.paginator.page_range %}
-            {% if i <= list.number|add:2 and i >= list.number|add:-2 %}
+            {% if i <= list.number|add:1 and i >= list.number|add:-1 %}
                 <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
             {% endif %}
         {% endfor %}
